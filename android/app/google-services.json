@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "874668964337",
+    "project_id": "note-loom",
+    "storage_bucket": "note-loom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874668964337:android:2ae7fe4dc72ee53f08ac50",
+        "android_client_info": {
+          "package_name": "com.example.school_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874668964337-dvu5tb92j4gd0o45u9iv36cc6qsde8st.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK_APvSiVCJYwVlQoJqLsLAlhv36P2jcE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874668964337-dvu5tb92j4gd0o45u9iv36cc6qsde8st.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
