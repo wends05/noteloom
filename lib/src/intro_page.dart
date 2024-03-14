@@ -6,26 +6,23 @@ import 'package:introduction_screen/introduction_screen.dart';
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
 
-  void onIntroEnd(context) {
-    GoRouter.of(context).go("/login");
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-
         child: Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: IntroductionScreen(
-              pages: viewModels,
-              showSkipButton: false,
-              skip: const Text("Skip"),
-              next: const Icon(Icons.arrow_forward_ios),
-              done: const Text("Done"),
-              onDone: () {
-                onIntroEnd(context);
-              }),
-        ));
+      padding: const EdgeInsets.only(top: 30),
+      child: IntroductionScreen(
+          pages: viewModels,
+          showBackButton: true,
+          showSkipButton: false,
+          skip: const Text("Skip"),
+          next: const Icon(Icons.arrow_forward_ios),
+          back: const Icon(Icons.arrow_back_ios),
+          done: const Text("Done"),
+          onDone: () {
+            GoRouter.of(context).go("/login");
+          }),
+    ));
   }
 }
 

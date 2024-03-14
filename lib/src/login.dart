@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/firebase.dart';
+import 'package:school_app/src/utils/firebase.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -50,13 +50,17 @@ class _LoginState extends State<Login> {
   }
 
   void login() async {
-    await FirebaseBackend()
-        .login(emailControl.text, passwordControl.text)
-        .then((value) => GoRouter.of(context).go("/home"));
+    if (_formKey.currentState!.validate()) {
+      await Auth().login(emailControl.text, passwordControl.text).then((value) {
+        GoRouter.of(context).go("/home");
+      });
+    }
   }
 
   void googleLogIn() async {
-    await FirebaseBackend().googleSignIn();
+    await Auth().googleSignIn().then((value) {
+      GoRouter.of(context).go("/home");
+    });
   }
 
   @override

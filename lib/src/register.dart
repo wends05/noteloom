@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_app/firebase.dart';
+import 'package:school_app/src/utils/firebase.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -63,7 +63,7 @@ class _RegisterState extends State<Register> {
         loading = "Loading...";
       });
 
-      await FirebaseBackend()
+      await Auth()
           .register(emailControl.text, passwordControl.text)
           .then((value) => GoRouter.of(context).go("setupProfile"));
     }
