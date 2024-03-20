@@ -139,4 +139,23 @@ class Database {
 
     return usernames;
   }
+
+  static Future<List<UniversityModel>> getUniversities() async {
+    final universities = <UniversityModel>[];
+  
+    await db
+        .collection("universities")
+        .withConverter(
+            fromFirestore: UniversityModel.fromFirestore,
+            toFirestore: (m, _) => m.toFirestore())
+        .get()
+        .then(
+      (value) {
+        for (var university in value.docs) {
+          universities.add(university.data());
+        }
+      },
+    );
+    return universities;
+  }
 }

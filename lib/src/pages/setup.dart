@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/src/utils/firebase.dart';
 
@@ -11,7 +12,7 @@ class Setup extends StatefulWidget {
 
 class _SetupState extends State<Setup> {
   late final List userNames;
-  final _formKey = GlobalKey();
+  // final _formKey = GlobalKey();
 
   final usernameControl = TextEditingController();
   final nameControl = TextEditingController();
@@ -67,49 +68,17 @@ class _SetupState extends State<Setup> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Welcome to Note Loom!"),
-            const Text("To get started, please setup your account."),
-            Container(
-              margin: const EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    textInput("Name", nameControl),
-                    textInput("Username", usernameControl),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text("You are currently logged in as:"),
-                    Text(Auth.auth.currentUser!.email!),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("If this is not you,"),
-                        CupertinoButton(
-                            onPressed: logOut, child: const Text("Sign Out"))
-                      ],
-                    ),
-                    CupertinoButton(
-                        child: const Text("Submit"),
-                        onPressed: () {
-                          if (true) {}
-                        })
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+    return  Scaffold(
+      body: Center(
+          child: Column(
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                context.go("/home");
+              },
+              child: const Text("press"))
+        ],
+      )),
     );
   }
 }
