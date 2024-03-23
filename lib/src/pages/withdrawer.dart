@@ -20,9 +20,15 @@ class _PageWithDrawerState extends State<PageWithDrawer>
   void initState() {
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 1000),
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -30,18 +36,22 @@ class _PageWithDrawerState extends State<PageWithDrawer>
     return AdvancedDrawer(
       backdropColor: Colors.lightBlue[700],
       animateChildDecoration: true,
-        controller: _drawercontroller,
-        drawer: MyDrawer(
-          onMenuItemSelect: (route) {
-            _drawercontroller.toggleDrawer();
-            context.go(route);
-          },
-        ),
-        animationController: _animationController,
-        openRatio: 0.5,
-        animationDuration: const Duration(milliseconds: 300),
-        animationCurve: Curves.easeInOut,
-        child: Scaffold(
+      controller: _drawercontroller,
+      drawer: MyDrawer(
+        onMenuItemSelect: (route) {
+          _drawercontroller.toggleDrawer();
+          context.go(route);
+        },
+      ),
+      childDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        
+      ),
+      animationController: _animationController,
+      openRatio: 0.5,
+      animationDuration: const Duration(milliseconds: 300),
+      animationCurve: Curves.easeInOut,
+      child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.lightBlue[700],
             leading: IconButton(
@@ -51,7 +61,7 @@ class _PageWithDrawerState extends State<PageWithDrawer>
               icon: const Icon(Icons.menu),
             ),
           ),
-          body: widget.child,
-        ));
+          body: widget.child),
+    );
   }
 }

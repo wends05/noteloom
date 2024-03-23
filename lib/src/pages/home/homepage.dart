@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:school_app/src/pages/home/bottom_scaffold.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:school_app/src/components/mybottomnavbar.dart';
+import 'package:school_app/src/pages/home/prioritysubjects.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,30 +10,49 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
+  
+  PersistentBottomNavBarItem _bottomNavBarItem(IconData icon, String? text) {
+    return PersistentBottomNavBarItem(
+      icon: Icon(icon),
+      title: text,
+      activeColorPrimary: Colors.blue,
+      inactiveColorPrimary: Colors.grey,
+    );
+  }
+
+
+  List<PersistentBottomNavBarItem> _navBarItems() {
+    return [
+      _bottomNavBarItem(Icons.book, 'Priority Subjects'),
+      _bottomNavBarItem(Icons.note_sharp, 'Recent Notes'),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(decoration: BoxDecoration(color: Colors.lightBlue[700])),
-        Container(
-          margin: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height * 0.3,
-          ),
+    return Scaffold(
+        body: PersistentTabView.custom(
+          context,
+          itemCount: _navBarItems().length,
+          screens: const [
+            PrioritySubjects(),
+            PrioritySubjects()
+          ],
+          confineInSafeArea: true,
+          customWidget: MyBottomNavBar(
+            items: _navBarItems(),
+            index: 0,
+            onItemSelected: (index) {
+              if (index == 0) {
+                Navigator.pushNamed(context, '/prioritysubjects');
+              } else {
+                Navigator.pushNamed(context, '/recentnotes');
+              }
+            },
+          )
           
-          height: MediaQuery.of(context).size.height * 0.7,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.all(20.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: const BottomScaffold(),
-          ),
-        ),
-      ],
-    );
+        ));
   }
+
+  
 }

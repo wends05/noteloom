@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class UserModel {
   final String id;
   final String? username;
@@ -54,6 +53,7 @@ class UniversityModel {
       this.storageLogoPath,
       this.subjectIds,
       this.departmentIds});
+
   factory UniversityModel.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot, _) {
     final data = snapshot.data();
@@ -78,5 +78,30 @@ class UniversityModel {
       if (subjectIds != null) "subjectIds": subjectIds,
       if (departmentIds != null) "departmentIds": departmentIds
     };
+  }
+}
+
+class SubjectModel {
+  String id;
+  String name;
+  List<String> subjectCode;
+
+  SubjectModel(
+      {required this.id, required this.name, required this.subjectCode});
+
+
+  factory
+  SubjectModel.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot, options
+  ) {
+    final data = snapshot.data();
+    final id = snapshot.id;
+
+    return SubjectModel(
+      id: id,
+      name: data?['name'],
+      subjectCode: data?['subjectCode']?.cast<String>()
+    );
+
   }
 }

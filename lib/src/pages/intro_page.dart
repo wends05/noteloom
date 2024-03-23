@@ -1,6 +1,8 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:school_app/src/utils/firebase.dart';
 import 'package:school_app/src/utils/models.dart';
@@ -21,7 +23,6 @@ class _IntroPageState extends State<IntroPage> {
   List<UniversityModel> filterUniversities = [];
   @override
   void initState() {
-    super.initState();
     Database.getUniversities().then((value) {
       universities = value;
       filterUniversities = universities;
@@ -29,6 +30,7 @@ class _IntroPageState extends State<IntroPage> {
         print(universities);
       }
     });
+    super.initState();
   }
 
   @override
@@ -53,119 +55,141 @@ class _IntroPageState extends State<IntroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              isOnLogin = false;
-            });
-          },
-          child: AnimatedContainer(
-              duration: const Duration(milliseconds: 1000),
-              curve: Curves.ease,
-              margin: EdgeInsets.only(
-                  bottom:
-                      isOnLogin ? MediaQuery.of(context).size.height * 0.2 : 0,
-                  top:
-                      isOnLogin ? 0 : MediaQuery.of(context).size.height * 0.1),
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/app/introimage.png"),
-                      fit: BoxFit.fitHeight),
+        backgroundColor: Colors.blue.shade700,
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Positioned(
+                  child: GestureDetector(
+                      onVerticalDragEnd: (details) {
+                        if (details.velocity.pixelsPerSecond.dy > 100) {
+                          setState(() {
+                            isOnLogin = false;
+                          });
+                        }
+
+                        if (details.velocity.pixelsPerSecond.dy < 100) {
+                          setState(() {
+                            isOnLogin = true;
+                          });
+                        }
+                      },
+                      child: AnimatedContainer(
+                        margin: EdgeInsets.only(
+                          bottom: isOnLogin
+                              ? MediaQuery.of(context).size.height * 0.25
+                              : 0,
+                        ),
+                        duration: const Duration(milliseconds: 1000),
+                        curve: Curves.ease,
+                        child: SvgPicture.asset(
+                          "assets/images/app/introimage.svg",
+                          height: MediaQuery.of(context).size.height * 0.7,
+                        ),
+                      ))),
+              Positioned(
+                top: 0,
+                left: 0,
+                child: AnimatedOpacity(
+                  opacity: isOnLogin ? 0 : 1,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease,
+                  child: Container(
+                    height: 300,
+                    margin: const EdgeInsets.only(left: 50, top: 50),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Welcome to",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        const Text(
+                          "Note Loom",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                            "Find and share your notes\nwitin your university."),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        ElevatedButton(
+                            child: const Text("Get Started"),
+                            onPressed: () {
+                              setState(() {
+                                isOnLogin = !isOnLogin;
+                              });
+                            }),
+                      ],
+                    ),
+                  ),
                 ),
-              )),
-        ),
-        AnimatedOpacity(
-          opacity: isOnLogin ? 0 : 1,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.ease,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.blue.shade200.withOpacity(0.7)),
-            height: 300,
-            margin: const EdgeInsets.only(left: 50, top: 50),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Welcome to",
-                  style: TextStyle(fontSize: 20),
-                ),
-                const Text(
-                  "Note Loom",
-                  style: TextStyle(fontSize: 40),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text("Find and share your notes\nwitin your university."),
-                const SizedBox(
-                  height: 20,
-                ),
-                
-                
-                ElevatedButton(
-                    child: const Text("Get Started"),
-                    onPressed: () {
+              ),
+              AnimatedPositioned(
+                bottom:
+                    isOnLogin ? 0 : -MediaQuery.of(context).size.height * 0.7,
+                curve: Curves.ease,
+                duration: isOnLogin
+                    ? const Duration(milliseconds: 600)
+                    : const Duration(milliseconds: 1500),
+                child: GestureDetector(
+                  onVerticalDragEnd: (details) {
+                    if (details.velocity.pixelsPerSecond.dy > 100) {
                       setState(() {
-                        isOnLogin = !isOnLogin;
+                        isOnLogin = false;
                       });
-                    }),
-              ],
-            ),
-          ),
-        ),
-        AnimatedPositioned(
-          bottom: isOnLogin ? 0 : -MediaQuery.of(context).size.height * 0.7,
-          curve: Curves.ease,
-          duration: isOnLogin
-              ? const Duration(milliseconds: 600)
-              : const Duration(milliseconds: 1500),
-          child: Center(
-            child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(40)),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Check if your school is\navailable:",
-                        style: TextStyle(fontSize: 40),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextField(
-                        controller: _findUniversity,
-                        onChanged: (value) {
-                          _displayUniversities(value);
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                    }
+                  },
+                  child: Center(
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(40),
+                                topRight: Radius.circular(40))),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 40),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Check if your school is\navailable:",
+                                style: TextStyle(fontSize: 40),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              TextField(
+                                controller: _findUniversity,
+                                onChanged: (value) {
+                                  _displayUniversities(value);
+                                },
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
 
-                      // used for list of universities
+                              // used for list of universities
 
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: filterUniversities.isNotEmpty
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: filterUniversities.isNotEmpty
                                       ? ListView.builder(
                                           shrinkWrap: true,
-                                          
                                           itemCount: filterUniversities.length,
                                           itemBuilder: (context, index) {
-                                            final university = filterUniversities[index];
+                                            final university =
+                                                filterUniversities[index];
                                             return ListTile(
                                               onTap: () {
                                                 setState(() {
@@ -186,26 +210,31 @@ class _IntroPageState extends State<IntroPage> {
                               ),
                               Center(
                                 child: ElevatedButton(
-                          onPressed: () {
-                            if (universities
-                                .map((_) => _.name)
-                                .contains(_findUniversity.text)) {
-                              final uniModel = universities.singleWhere(
-                                  (element) =>
-                                      element.name == _findUniversity.text);
-                              GoRouter.of(context).goNamed("login",
-                                  pathParameters: {"universityId": uniModel.id!});
-                            }
-                          },
-                          child: const Text("Get Started"),
-                        ),
-                      )
-                    ],
+                                  onPressed: () {
+                                    if (universities
+                                        .map((_) => _.name)
+                                        .contains(_findUniversity.text)) {
+                                      final uniModel = universities.singleWhere(
+                                          (element) =>
+                                              element.name ==
+                                              _findUniversity.text);
+                                      GoRouter.of(context).goNamed("login",
+                                          pathParameters: {
+                                            "universityId": uniModel.id!
+                                          });
+                                    }
+                                  },
+                                  child: const Text("Get Started"),
+                                ),
+                              )
+                            ],
+                          ),
+                        )),
                   ),
-                )),
+                ),
+              )
+            ],
           ),
-        )
-      ],
-    ));
+        ));
   }
 }

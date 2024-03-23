@@ -142,7 +142,7 @@ class Database {
 
   static Future<List<UniversityModel>> getUniversities() async {
     final universities = <UniversityModel>[];
-  
+
     await db
         .collection("universities")
         .withConverter(
